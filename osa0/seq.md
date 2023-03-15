@@ -25,14 +25,14 @@ sequenceDiagram
     	server-->>browser: main.js, the browser side script
     	deactivate server
 	
-	Note right to browser: when main.js is ran it fetches the now updated data.json file
+	Note right of browser: when main.js is ran it fetches the now updated data.json file
 
 	browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
 	activate server
 	server-->>browser: notes in a json file
 	deactivate server
 	
-	Note right to browser: like when normally loading the site after the data.json is returned with code 200(OK) the notes are rendered from the data.json to the site.
+	Note right of browser: like when normally loading the site after the data.json is returned with code 200(OK) the notes are rendered from the data.json to the site.
 	
 	browser->>server: GET https://studies.cs.helsinki.fi/favicon.ico
 	activate server 
