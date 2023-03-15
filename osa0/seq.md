@@ -33,6 +33,7 @@ sequenceDiagram
 	deactivate server
 	
 	Note right to browser: like when normally loading the site after the data.json is returned with code 200(OK) the notes are rendered from the data.json to the site.
+	
 	browser->>server: GET https://studies.cs.helsinki.fi/favicon.ico
 	activate server 
 	server-->>browser: some html file containing the text "Course stats"
