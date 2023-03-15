@@ -27,7 +27,7 @@ sequenceDiagram
 	server-->>browser: notes in a json file
 	deactivate server
 
-	browser->>server GET https://studies.cs.helsinki.fi/favicon.ico
+	browser->>server: GET https://studies.cs.helsinki.fi/favicon.ico
 	activate server 
 	server-->>browser: some html file containing the text "Course stats"
 	deactivate server
