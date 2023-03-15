@@ -31,4 +31,5 @@ sequenceDiagram
 	activate server 
 	server-->>browser: some html file containing the text "Course stats"
 	deactivate server
+	
 ```
