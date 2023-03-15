@@ -30,4 +30,5 @@ sequenceDiagram
 	browser->>server GET https://studies.cs.helsinki.fi/favicon.ico
 	activate server 
 	server-->>browser: some html file containing the text "Course stats"
+	deactivate server
 ```
