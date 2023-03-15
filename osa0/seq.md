@@ -5,7 +5,7 @@ sequenceDiagram
 
 	browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
 	activate server
-	server-->>browser: Redirection with code 302 and /exampleapp/notes
+	server-->>browser: Redirection with code 302 to GET /exampleapp/notes as the responce
 
 	browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
 	activate server
