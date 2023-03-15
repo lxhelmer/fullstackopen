@@ -8,5 +8,7 @@ sequenceDiagram
 	activate server
 	server-->>browser: json with the anserw "note created"
 	deactivate server
+	
+	Note right of browser: The note is also added to the local list of notes so that it can be rendered instantly without fetching again the data.json
   
 ```
