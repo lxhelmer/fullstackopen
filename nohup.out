@@ -1,0 +1,4 @@
+kf.xmlgui: Shortcut for action  "" "Show SSH Manager" set with QAction::setShortcut()! Use KActionCollection::setDefaultShortcut(s) instead.
+kf.xmlgui: Shortcut for action  "" "Show Quick Commands" set with QAction::setShortcut()! Use KActionCollection::setDefaultShortcut(s) instead.
+kf.xmlgui: Shortcut for action  "" "Show SSH Manager" set with QAction::setShortcut()! Use KActionCollection::setDefaultShortcut(s) instead.
+kf.xmlgui: Shortcut for action  "" "Show Quick Commands" set with QAction::setShortcut()! Use KActionCollection::setDefaultShortcut(s) instead.
