@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 
 const Filter = (props) => {
 	return (
 			<div>
-				filter shown with 
+				filter shown with
 				<input 	value={props.newFilter}
 								onChange={props.handleFilter}/>
-			</div>	
+			</div>
 	)
 }
 const PersonForm = (props) => {
 	return (
       <form onSubmit={props.addPerson}>
         <div>
-          name: <input 
+          name: <input
 									value={props.newName}
 									onChange={props.handleNameChange}
 								/>
@@ -137,6 +136,9 @@ const App = () => {
 							})
 							.catch(error => {
 								setError(`Information of ${newName} has already been removed from the server`)
+								setTimeout(() => {
+									setError(null)
+								}, 5000)
 							})
 				}
 		} else {
@@ -152,7 +154,10 @@ const App = () => {
 					}, 5000)
 					})
 				.catch(error => {
-					console.log('joku meni pieleen uutta henkilöä lisätessä')
+					setError(error.response.data.error)
+					setTimeout(() => {
+						setError(null)
+					}, 5000)
 				})
 		}
 	}
