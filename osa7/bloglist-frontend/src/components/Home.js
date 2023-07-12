@@ -19,9 +19,9 @@ const Home = ({ users, setUsers }) => {
 	const notif = useSelector((state) => state.notif)
 	const blogs = useSelector((state) => state.blogs)
 	const user = useSelector((state) => state.user)
-	if (!user) {
-		return null
-	}
+	//	if (!user) {
+	//		return null
+	//	}
 
 	const Notification = ({ message }) => {
 		if (message === null) {
