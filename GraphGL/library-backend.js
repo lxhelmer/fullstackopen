@@ -86,6 +86,14 @@ let books = [
 */
 
 const typeDefs = `
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+  type Token {
+    value: String!
+  }
   type Book {
     title: String!
     published: Int!
@@ -103,9 +111,10 @@ const typeDefs = `
     authorCount: Int!
     allBooks(
     	author:String, 
-	genre:String
-	) : [Book!]!
+	    genre:String) 
+          : [Book!]!
     allAuthors: [Author!]!
+    me: User
   },
   type Mutation {
     addBook(
@@ -118,6 +127,14 @@ const typeDefs = `
       name: String!
       setBornTo: Int!
       ): Author
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
   },
 `
 
@@ -144,24 +161,39 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      return Book.find({})
-      /*
-      var ret = books
+      var ret = await Book.find({})
       if (args.author) {
-	ret = ret.filter(x => x.author === args.author)
+        try {
+          const author = await Author.findOne({ name: args.author })
+          console.log(author._id)
+          ret = ret.filter(x => x.author.equals(author._id))
+        } catch (error) {
+          throw new GraphQLError('No such author', {
+            extensions: {
+              code: 'bad_user_input',
+              invalidargs: args.author,
+              error
+            }
+          })
+        }
       } if (args.genre) {
-	ret = ret.filter(x => x.genres.includes(args.genre))
+        ret = ret.filter(x => x.genres.includes(args.genre))
       }
       return ret
-      */
     },
-    allAuthors: () => authors,
+    allAuthors: async () => await Author.find({})
   },
   Author: {
-    name: (root) => root.name,
-    bookCount: (root) => {
+    name: async (root) => {
+      const authorObj = await Author.findById(root)
       return (
-        books.filter(x => x.author === root.name).length
+        authorObj.name
+      )
+    },
+    bookCount: async (root) => {
+      const book_amt = await Book.collection.countDocuments({'author': root})
+      return (
+        book_amt
       )
     }
   },
@@ -174,10 +206,10 @@ const resolvers = {
         try {
           await new_author.save()
         } catch (error) {
-          throw new GraphQLError('Adding author failed', {
+          throw new GraphQLError('adding author failed', {
             extensions: {
-              code: 'BAD_USER_INPUT',
-              invalidArgs: args.name,
+              code: 'bad_user_input',
+              invalidargs: args.name,
               error
             }
           })
@@ -192,27 +224,26 @@ const resolvers = {
         throw new GraphQLError('Saving book failed', {
           extensions: {
             code: 'BAD_USER_INPUT',
+            invalidArgs: args.author,
+            error
+          }
+        })
+      }
+      return book
+    },
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name })
+      try {
+        return Author.findByIdAndUpdate(author._id, { born: args.setBornTo }, {new:true})
+      } catch (error) {
+        throw new GraphQLError('Updating author failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
             invalidArgs: args.name,
             error
           }
         })
       }
-      /*const book = { ...args, id: uuid() }
-      books = books.concat(book)
-      if (!authors.includes(args.author)) {
-	 const author = { name: args.author, id: uuid() }
-         authors = authors.concat(author)
-      }
-      return book */
-    },
-    editAuthor: (root, args) => {
-      const author = authors.find(a => a.name === args.name)
-      if (!author) {
-	 return null 
-      }
-      const updatedAuthor = {...author, born: args.setBornTo}
-      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-      return updatedAuthor
     }
   }
 }
