@@ -167,7 +167,6 @@ const resolvers = {
       if (args.author) {
         try {
           const author = await Author.findOne({ name: args.author })
-          console.log(author._id)
           ret = ret.filter(x => x.author.equals(author._id))
         } catch (error) {
           throw new GraphQLError('No such author', {
@@ -197,7 +196,6 @@ const resolvers = {
     },
     bookCount: async (root) => {
       const book_amt = await Book.collection.countDocuments({'author': root._id})
-      console.log(root._id)
       return (
         book_amt
       )
@@ -322,7 +320,7 @@ startStandaloneServer(server, {
       const currentUser = await User 
         .findById(decodedToken.id)
       return { currentUser }
-    }  
+    } 
   },
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`)
